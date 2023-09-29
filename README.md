@@ -58,3 +58,21 @@ onClick={() => setShowPassword(!showPassword)} >
 {/_ Show _/}
 {showPassword ? <FaEyeSlash /> : <FaEye />}
 </span>
+
+### Added Terms & Conditions Checkbox below register Button
+
+Step-1: Create input type checkbox
+
+ <div className="flex gap-2 items-center">
+                    <input type="checkbox" name="terms" />
+                    <label className="label">
+                      <a href="#" className="label-text-alt link link-hover">
+                        Accept Terms & Conditions
+                      </a>
+                    </label>
+                  </div>
+Step2:   const termsAccepted = e.target.terms.checked;
+Step3: else if (!termsAccepted) {
+      setRegisterError('Please accept our terms & condition');
+      return;
+    }

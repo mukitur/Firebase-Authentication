@@ -11,6 +11,7 @@ const Register = () => {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
+    const termsAccepted = e.target.terms.checked;
 
     // reset error
     setRegisterError('');
@@ -24,11 +25,14 @@ const Register = () => {
     } else if (!/[A-Z]/.test(password)) {
       setRegisterError('Password must contain at least one UpperCase letter');
       return;
+    } else if (!termsAccepted) {
+      setRegisterError('Please accept our terms & condition');
+      return;
     }
 
     // Create User
     // console.log(email, password);
-    createUserWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPassword(auth, email, password, termsAccepted)
       .then((result) => {
         const user = result.user;
         console.log(user);
@@ -80,12 +84,21 @@ const Register = () => {
                     {/* Show */}
                     {showPassword ? <FaEye /> : <FaEyeSlash />}
                   </span>
+                  <div className="flex gap-2 items-center">
+                    <input type="checkbox" name="terms" />
+                    <label className="label">
+                      <a href="#" className="label-text-alt link link-hover">
+                        Accept Terms & Conditions
+                      </a>
+                    </label>
+                  </div>
                   <label className="label">
                     <a href="#" className="label-text-alt link link-hover">
                       Forgot password?
                     </a>
                   </label>
                 </div>
+
                 <div className="form-control mt-6">
                   <button className="btn btn-primary">Register</button>
                 </div>
