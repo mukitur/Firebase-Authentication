@@ -41,7 +41,9 @@ const NavBar = () => {
             {menuLinks}
           </ul>
         </div>
-        <a className="btn btn-ghost normal-case text-xl">daisyUI</a>
+        <NavLink to="/" className="btn btn-ghost normal-case text-xl">
+          FireBase Authentication
+        </NavLink>
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{menuLinks}</ul>
