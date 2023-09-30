@@ -1,11 +1,15 @@
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import {
+  sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import auth from '../../firebase/firebase.config';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
   const [loginError, setloginError] = useState('');
   const [loginSuccess, setLoginSuccess] = useState('');
+  const emailRef = useRef(null);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -18,19 +22,24 @@ const Login = () => {
     setloginError('');
     setLoginSuccess('');
 
-    // Validation
-    if (password.length < 6) {
-      setloginError('password should be minimum 6 character length');
-      return;
-    } else if (!/[A-Z]/.test(password)) {
-      setloginError('Password must contain at least one UpperCase letter');
-      return;
-    }
+    // // Validation
+    // if (password.length < 6) {
+    //   setloginError('password should be minimum 6 character length');
+    //   return;
+    // } else if (!/[A-Z]/.test(password)) {
+    //   setloginError('Password must contain at least one UpperCase letter');
+    //   return;
+    // }
     // login user
     signInWithEmailAndPassword(auth, email, password)
       .then((result) => {
         const user = result.user;
-        setLoginSuccess('User Login Successfully');
+        console.log(user);
+        if (result.user.emailVerified) {
+          setLoginSuccess('User Login Successfully');
+        } else {
+          alert('Please verify email fitrst');
+        }
       })
       .catch((error) => {
         console.error(error);
@@ -39,8 +48,27 @@ const Login = () => {
   };
 
   //   Forget Password/Reset Password
-  const handleForgetPassword = (e) => {
-    console.log('send reset email');
+  const handleForgetPassword = () => {
+    // console.log('send reset email');
+    const email = emailRef.current.value;
+    // console.log(email);
+    if (!email) {
+      alert('please set an email address');
+      return;
+    } else if (
+      !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)
+    ) {
+      console.log('please enter a valid email');
+      return;
+    }
+    // send validation email
+    sendPasswordResetEmail(auth, email)
+      .then(() => {
+        alert('please check your email');
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -63,6 +91,7 @@ const Login = () => {
                 </label>
                 <input
                   type="email"
+                  ref={emailRef}
                   placeholder="email"
                   className="input input-bordered"
                   name="email"

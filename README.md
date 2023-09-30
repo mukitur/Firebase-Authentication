@@ -76,3 +76,69 @@ Step3: else if (!termsAccepted) {
       setRegisterError('Please accept our terms & condition');
       return;
     }
+
+### Forget Password /Reset Password
+
+Step1:
+<label className="label">
+<a
+                    onClick={handleForgetPassword}
+                    href="#"
+                    className="label-text-alt link link-hover"
+                  >
+Forgot password?
+</a>
+</label>
+Step2:
+const emailRef = useRef(null);
+
+Step3: email input field add ref={emailRef}
+step4:
+const handleForgetPassword = () => {
+// console.log('send reset email');
+const email = emailRef.current.value;
+// console.log(email);
+if (!email) {
+alert('please set an email address');
+return;
+} else if (
+!/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(email)
+) {
+console.log('please enter a valid email');
+return;
+}
+// send validation email
+sendPasswordResetEmail(auth, email)
+.then(() => {
+alert('please check your email');
+})
+.catch((error) => {
+console.log(error);
+});
+};
+
+### Send email verification
+
+Step1: register.jsx file inside the following function createUserWithEmailAndPassword
+// Send verification email
+sendEmailVerification(result.user).then(() => {
+alert('please check your email and verify your account');
+});
+
+Step-2:
+login.jsx page e
+signInWithEmailAndPassword(auth, email, password)
+.then((result) => {
+const user = result.user;
+console.log(user);
+if (result.user.emailVerified) {
+setLoginSuccess('User Login Successfully');
+} else {
+alert('Please verify email fitrst');
+}
+})
+.catch((error) => {
+console.error(error);
+setloginError(error.message);
+});
+};
