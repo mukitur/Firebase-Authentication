@@ -2,6 +2,7 @@ import { createUserWithEmailAndPassword } from '@firebase/auth';
 import auth from '../../firebase/firebase.config';
 import { useState } from 'react';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 const Register = () => {
   const [registerError, setRegisterError] = useState('');
   const [registerSuccess, setRegisterSuccess] = useState('');
@@ -35,7 +36,7 @@ const Register = () => {
     createUserWithEmailAndPassword(auth, email, password, termsAccepted)
       .then((result) => {
         const user = result.user;
-        console.log(user);
+        // console.log(user);
         setRegisterSuccess(`User  Created Successfully`);
       })
       .catch((error) => {
@@ -107,6 +108,12 @@ const Register = () => {
               {registerSuccess && (
                 <p className="text-green-700">{registerSuccess}</p>
               )}
+              <h4>
+                Already registered? please{' '}
+                <Link className="text-blue-800 " to="/login">
+                  Login
+                </Link>
+              </h4>
             </div>
           </div>
         </div>
